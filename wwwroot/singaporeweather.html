@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="lib/v6.3.1/ol.css" type="text/css">
+    <style>
+      .map {
+        height: 800px;
+        width: 100%;
+      }
+    </style>
+    <script src="lib/v6.3.1/ol.js"></script>
+    <title>Singapore Weather</title>
+  </head>
+  <body>
+    <h2>My Map</h2>
+    <div id="singapore_map" class="map"></div>
+    <script type="text/javascript">
+      var map = new ol.Map({
+        target: 'singapore_map',
+        layers: [
+          new ol.layer.Tile({
+              source: new ol.source.TileWMS({
+                  url: 'http://localhost:8080/geoserver/singapore/wms',
+                  params: {
+                      'FORMAT': 'image/png', 'VERSION': '1.1.0', tiled: true, LAYERS: "singapore:Singapore Weather", STYLES: '' }
+              })
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([103.79539, 1.35406]),
+          zoom: 12
+        })
+      });
+    </script>
+  </body>
+</html>

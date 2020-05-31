@@ -1,0 +1,45 @@
+@page "/airtemperature"
+
+@using System.Data
+@using Singapore.AirTemperature
+@inject SingaporeAirTemperatureService AirTemperatureService
+
+<h1>Singapore air temperature</h1>
+
+<p>Live data fatched from data.gov.sg</p>
+
+@if (airtemperatures == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Degree (&deg;C)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in airtemperatures.Rows)
+            {
+                <tr>
+                    <td>@row.ItemArray[4].ToString()</td>
+                    <td>@row.ItemArray[1]</td>
+                    <td>@row.ItemArray[3].ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private DataTable airtemperatures;
+
+    protected override async Task OnInitializedAsync()
+    {
+        airtemperatures = await AirTemperatureService.GetAirTemperatureAsync();
+    }
+}

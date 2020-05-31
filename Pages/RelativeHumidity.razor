@@ -1,0 +1,45 @@
+@page "/relativehumidity"
+
+@using System.Data
+@using Singapore.RelativeHumidity
+@inject SingaporeRelativeHumidityService RelativeHumidityService
+
+<h1>Singapore relative humidity</h1>
+
+<p>Live data fatched from data.gov.sg</p>
+
+@if (relativehumidities == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Location</th>
+                <th>%</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in relativehumidities.Rows)
+            {
+                <tr>
+                    <td>@row.ItemArray[4].ToString()</td>
+                    <td>@row.ItemArray[1]</td>
+                    <td>@row.ItemArray[3].ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private DataTable relativehumidities;
+
+    protected override async Task OnInitializedAsync()
+    {
+        relativehumidities = await RelativeHumidityService.GetRelativeHumidityAsync();
+    }
+}

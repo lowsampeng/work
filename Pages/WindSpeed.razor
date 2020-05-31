@@ -1,0 +1,45 @@
+@page "/windspeed"
+
+@using System.Data
+@using Singapore.WindSpeed
+@inject SingaporeWindSpeedService WindSpeedService
+
+<h1>Singapore wind speed</h1>
+
+<p>Live data fatched from data.gov.sg</p>
+
+@if (windspeeds == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Speed (km/h)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in windspeeds.Rows)
+            {
+                <tr>
+                    <td>@row.ItemArray[4].ToString()</td>
+                    <td>@row.ItemArray[1]</td>
+                    <td>@row.ItemArray[3].ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private DataTable windspeeds;
+
+    protected override async Task OnInitializedAsync()
+    {
+        windspeeds = await WindSpeedService.GetWindSpeedAsync();
+    }
+}

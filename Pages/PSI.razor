@@ -1,0 +1,69 @@
+@page "/psi"
+
+@using System.Data
+@using Singapore.PSI
+@inject SingaporePSIService PSIService
+
+<h1>Singapore PSI</h1>
+
+<p>Live data fatched from data.gov.sg</p>
+
+@if (psis == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Location</th>
+                <th>24-hr PSI</th>
+                <th>3-hr PSI</th>
+                <th>PM<span style="font-size:8px">10</span></th>
+                <th>PM<span style="font-size:8px">2.5</span></th>
+                <th>SO<span style="font-size:8px">2</span></th>
+                <th>O<span style="font-size:8px">3</span></th>
+                <th>CO</th>
+                <th>24-hr PM<span style="font-size:8px">10</span></th>
+                <th>24-hr PM<span style="font-size:8px">2.5</span></th>
+                <th>1-hr NO<span style="font-size:8px">2</span> max</th>
+                <th>24-hr SO<span style="font-size:8px">2</span></th>
+                <th>8-hr CO max</th>
+                <th>8-hr O<span style="font-size:8px">3</span> max</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in psis.Rows)
+            {
+            <tr>
+                <td>@row.ItemArray[3].ToString()</td>
+                <td>@row.ItemArray[0]</td>
+                <td>@row.ItemArray[4].ToString()</td>
+                <td>@row.ItemArray[5].ToString()</td>
+                <td>@row.ItemArray[6].ToString()</td>
+                <td>@row.ItemArray[7].ToString()</td>
+                <td>@row.ItemArray[8].ToString()</td>
+                <td>@row.ItemArray[9].ToString()</td>
+                <td>@row.ItemArray[10].ToString()</td>
+                <td>@row.ItemArray[11].ToString()</td>
+                <td>@row.ItemArray[12].ToString()</td>
+                <td>@row.ItemArray[13].ToString()</td>
+                <td>@row.ItemArray[14].ToString()</td>
+                <td>@row.ItemArray[15].ToString()</td>
+                <td>@row.ItemArray[16].ToString()</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private DataTable psis;
+
+    protected override async Task OnInitializedAsync()
+    {
+        psis = await PSIService.GetPSIAsync();
+    }
+}
