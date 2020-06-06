@@ -2,31 +2,30 @@
 
 @using System.Data
 @using Singapore.WindDirection
-@inject SingaporeWindDirectionService WindDirectionService
+@inject SingaporeWindDirectionService Service
 
 <h1>Singapore wind direction</h1>
 
 <p>Live data fatched from data.gov.sg</p>
 
-@if (winddirections == null)
+@if (data == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <p>Updated on : @data.Rows[0].ItemArray[4].ToString()</p>
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
                 <th>Location</th>
                 <th>Direction (&deg;degree)</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (DataRow row in winddirections.Rows)
+            @foreach (DataRow row in data.Rows)
             {
                 <tr>
-                    <td>@row.ItemArray[4].ToString()</td>
                     <td>@row.ItemArray[1]</td>
                     <td>@row.ItemArray[3].ToString()</td>
                 </tr>
@@ -36,10 +35,10 @@ else
 }
 
 @code {
-    private DataTable winddirections;
+    private DataTable data;
 
     protected override async Task OnInitializedAsync()
     {
-        winddirections = await WindDirectionService.GetWindDirectionAsync();
+        data = await Service.GetDataAsync();
     }
 }

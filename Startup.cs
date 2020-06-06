@@ -15,6 +15,9 @@ using Singapore.AirTemperature;
 using Singapore.PSI;
 using Singapore.RelativeHumidity;
 using Singapore.WindSpeed;
+using Singapore.TwoHourWeatherForecast;
+using Singapore.TwentyFourHourWeatherForecast;
+using Singapore.FourDayWeatherForecast;
 
 namespace Singapore
 {
@@ -39,6 +42,9 @@ namespace Singapore
             services.AddSingleton<SingaporePSIService>();
             services.AddSingleton<SingaporeRelativeHumidityService>();
             services.AddSingleton<SingaporeWindSpeedService>();
+            services.AddSingleton<SingaporeTwoHourWeatherForecastService>();
+            services.AddSingleton<SingaporeTwentyFourHourWeatherForecastService>();
+            services.AddSingleton<SingaporeFourDayWeatherForecastService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

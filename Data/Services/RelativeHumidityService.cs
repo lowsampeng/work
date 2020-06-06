@@ -15,7 +15,7 @@ namespace Singapore.RelativeHumidity
         private string StoredProcedure { get{ return @"[dbo].[UpdateRelativeHumidity]";}}
 
         // fillup the data table for bulk update
-        public async Task<DataTable> GetRelativeHumidityAsync()
+        public async Task<DataTable> GetDataAsync()
         {
             GeometryFactory geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
@@ -33,8 +33,6 @@ namespace Singapore.RelativeHumidity
                     dataTable.Rows.Add(new object[] {
                         s.id,
                         s.name,
-//                        SqlGeometry.Point(s.location.longitude, s.location.latitude, 4326).STAsBinary(),
-//                        geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate(s.location.longitude, s.location.latitude)).AsBinary(),
                         new SqlBytes(geometryFactory.CreatePoint(new Coordinate(s.location.longitude, s.location.latitude)).AsBinary()),
                         obj.items.Select(i => i.readings.Where(r => r.station_id == s.id).Select(r => r.value)).ToList()[0].FirstOrDefault(),
                         Convert.ToDateTime(obj.items[0].timestamp)

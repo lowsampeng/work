@@ -1,10 +1,10 @@
-@page "/windspeed"
+@page "/2hrweatherforecast"
 
 @using System.Data
-@using Singapore.WindSpeed
-@inject SingaporeWindSpeedService Service
+@using Singapore.TwoHourWeatherForecast
+@inject SingaporeTwoHourWeatherForecastService Service
 
-<h1>Singapore wind speed</h1>
+<h1>Singapore 2-hr weather forecast</h1>
 
 <p>Live data fatched from data.gov.sg</p>
 
@@ -14,20 +14,21 @@
 }
 else
 {
-    <p>Updated on : @data.Rows[0].ItemArray[4].ToString()</p>
+    <p>Valid from @data.Rows[0].ItemArray[3].ToString() to @data.Rows[0].ItemArray[4].ToString()</p>
+    <p>Updated on : @data.Rows[0].ItemArray[5].ToString()</p>
     <table class="table">
         <thead>
             <tr>
-                <th>Location</th>
-                <th>Speed (km/h)</th>
+                <th>Name</th>
+                <th>Forecast</th>
             </tr>
         </thead>
         <tbody>
             @foreach (DataRow row in data.Rows)
             {
                 <tr>
-                    <td>@row.ItemArray[1]</td>
-                    <td>@row.ItemArray[3].ToString()</td>
+                    <td>@row.ItemArray[0]</td>
+                    <td>@row.ItemArray[2]</td>
                 </tr>
             }
         </tbody>

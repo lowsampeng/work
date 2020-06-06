@@ -1,0 +1,58 @@
+@page "/4dayweatherforecast"
+
+@using System.Data
+@using Singapore.FourDayWeatherForecast
+@inject SingaporeFourDayWeatherForecastService Service
+
+<h1>Singapore 4-day weather forecast</h1>
+
+<p>Live data fatched from data.gov.sg</p>
+
+@if (data == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>Updated on : @data.Rows[0].ItemArray[9].ToString()</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Forecast</th>
+                <th>min Temp</th>
+                <th>max Temp</th>
+                <th>min RH</th>
+                <th>max RH</th>
+                <th>min Wind spd</th>
+                <th>max Wind spd</th>
+                <th>Wind direction</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in data.Rows)
+            {
+                <tr>
+                    <td>@row.ItemArray[0]</td>
+                    <td>@row.ItemArray[1]</td>
+                    <td>@row.ItemArray[2] &deg;C</td>
+                    <td>@row.ItemArray[3] &deg;C</td>
+                    <td>@row.ItemArray[4] %</td>
+                    <td>@row.ItemArray[5] %</td>
+                    <td>@row.ItemArray[6] km/h</td>
+                    <td>@row.ItemArray[7] km/h</td>
+                    <td>@row.ItemArray[8]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private DataTable data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await Service.GetDataAsync();
+    }
+}

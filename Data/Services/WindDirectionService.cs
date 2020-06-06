@@ -15,7 +15,7 @@ namespace Singapore.WindDirection
         private string StoredProcedure { get{ return @"[dbo].[UpdateWindDirection]";}}
 
         // fillup the data table for bulk update
-        public async Task<DataTable> GetWindDirectionAsync()
+        public async Task<DataTable> GetDataAsync()
         {
             GeometryFactory geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 

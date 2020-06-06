@@ -2,31 +2,30 @@
 
 @using System.Data
 @using Singapore.AirTemperature
-@inject SingaporeAirTemperatureService AirTemperatureService
+@inject SingaporeAirTemperatureService Service
 
 <h1>Singapore air temperature</h1>
 
 <p>Live data fatched from data.gov.sg</p>
 
-@if (airtemperatures == null)
+@if (data == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <p>Updated on : @data.Rows[0].ItemArray[4].ToString()</p>
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
                 <th>Location</th>
                 <th>Degree (&deg;C)</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (DataRow row in airtemperatures.Rows)
+            @foreach (DataRow row in data.Rows)
             {
                 <tr>
-                    <td>@row.ItemArray[4].ToString()</td>
                     <td>@row.ItemArray[1]</td>
                     <td>@row.ItemArray[3].ToString()</td>
                 </tr>
@@ -36,10 +35,10 @@ else
 }
 
 @code {
-    private DataTable airtemperatures;
+    private DataTable data;
 
     protected override async Task OnInitializedAsync()
     {
-        airtemperatures = await AirTemperatureService.GetAirTemperatureAsync();
+        data = await Service.GetDataAsync();
     }
 }

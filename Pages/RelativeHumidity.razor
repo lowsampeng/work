@@ -2,31 +2,30 @@
 
 @using System.Data
 @using Singapore.RelativeHumidity
-@inject SingaporeRelativeHumidityService RelativeHumidityService
+@inject SingaporeRelativeHumidityService Service
 
 <h1>Singapore relative humidity</h1>
 
 <p>Live data fatched from data.gov.sg</p>
 
-@if (relativehumidities == null)
+@if (data == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <p>Updated on : @data.Rows[0].ItemArray[4].ToString()</p>
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
                 <th>Location</th>
                 <th>%</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (DataRow row in relativehumidities.Rows)
+            @foreach (DataRow row in data.Rows)
             {
                 <tr>
-                    <td>@row.ItemArray[4].ToString()</td>
                     <td>@row.ItemArray[1]</td>
                     <td>@row.ItemArray[3].ToString()</td>
                 </tr>
@@ -36,10 +35,10 @@ else
 }
 
 @code {
-    private DataTable relativehumidities;
+    private DataTable data;
 
     protected override async Task OnInitializedAsync()
     {
-        relativehumidities = await RelativeHumidityService.GetRelativeHumidityAsync();
+        data = await Service.GetDataAsync();
     }
 }

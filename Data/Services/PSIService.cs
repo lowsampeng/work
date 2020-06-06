@@ -14,7 +14,7 @@ namespace Singapore.PSI
         private string StoredProcedure { get{ return @"[dbo].[UpdatePSI]";}}
 
         // fillup the data table for bulk update
-        public async Task<DataTable> GetPSIAsync()
+        public async Task<DataTable> GetDataAsync()
         {
             GeometryFactory geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
@@ -40,8 +40,6 @@ namespace Singapore.PSI
                     {
                         dataTable.Rows.Add(new object[] {
                             md.name,
-//                            SqlGeometry.Point(md.label_location.longitude, md.label_location.latitude, 4326).STAsBinary(),
-//                            geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate(md.label_location.longitude, md.label_location.latitude)).AsBinary(),
                             new SqlBytes(geometryFactory.CreatePoint(new Coordinate(md.label_location.longitude, md.label_location.latitude)).AsBinary()),
                             Convert.ToDateTime(obj.items[0].timestamp),
                             Convert.ToDateTime(obj.items[0].update_timestamp),
