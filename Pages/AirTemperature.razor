@@ -12,7 +12,7 @@
 {
     <p><em>Loading...</em></p>
 }
-else
+else if (data.Rows.Count > 0)
 {
     <p>Updated on : @data.Rows[0].ItemArray[4].ToString()</p>
     <table class="table">
@@ -32,6 +32,10 @@ else
             }
         </tbody>
     </table>
+}
+else
+{
+    <p><em>No record found!</em></p>
 }
 
 @code {
